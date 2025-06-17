@@ -1,0 +1,67 @@
+{
+  "name": "wowok_machine_mcp_server",
+  "version": "1.2.24",
+  "description": "MCP server for querying data from WoWok: Unlock Co-Creation, Lighting Transaction, Empower Potential.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "node",
+  "type": "module",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "start": "tsx src/index.ts"
+  },
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "wowok_mcp": "dist/index.js"
+  },
+  "keywords": [
+    "web3",
+    "AI",
+    "wowok",
+    "sui",
+    "collaboration",
+    "protocol",
+    "WOW",
+    "permission",
+    "guard",
+    "service",
+    "order",
+    "machine",
+    "progress",
+    "passport",
+    "demand",
+    "reward",
+    "discount",
+    "mark",
+    "message",
+    "vote",
+    "tags",
+    "entity",
+    "resource",
+    "grantor",
+    "grantee",
+    "move language",
+    "move",
+    "treasury",
+    "payment",
+    "arbitration",
+    "oracle",
+    "AI agent tool",
+    "MCP server"
+  ],
+  "author": "wowok",
+  "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.7.0",
+    "zod": "^3.25.64"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.5",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}
