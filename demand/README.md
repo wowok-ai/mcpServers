@@ -1,5 +1,7 @@
 # WoWok Demand MCP Server
-Describes operations to create or modify an on-chain Demand object using the 'account' field to sign transactions and the 'data' field to define object details. \nThe Demand object enables its manager to publish service-seeking demands, declare, and grant rewards to satisfactory service referrers. \nIt supports transaction models like C2B or C2C, where managers can dynamically update/refine demands, and referrers can adjust Services and their supply chain commitments to better fulfill personalized requirements. \nDemand administrators control permissions for different operations through a Permission object. and may set up a Guard object to enforce threshold verification requirements for service referrers.
+Operations to create or modify an on-chain Demand object using the 'account' field to sign transactions and the 'data' field to define object details.     
+The Demand object enables its manager to publish service-seeking demands, declare, and grant rewards to satisfactory service referrers. It supports transaction models like C2B or C2C, where managers can dynamically update/refine demands, and referrers can adjust Services and their supply chain commitments to better fulfill personalized requirements.    
+Demand administrators control permissions for different operations through a Permission object and may set up a Guard object to enforce threshold verification requirements for service referrers.
 
 ## What is WoWok？
 Create, collaborate, and transact on your own terms with the AI-driven web3 collaboration protocol.
