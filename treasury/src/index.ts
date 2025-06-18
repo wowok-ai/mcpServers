@@ -11,9 +11,9 @@ type ToolInput = z.infer<typeof ToolInputSchema>;
 A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
-    name: "wowok",
+    name: "wowok_treasury_mcp_server",
     version: "1.1.14",
-    description: `MCP server for querying data from WoWok: Unlock Co-Creation, Lighting Transaction, Empower Potential.`,
+    description: `${A.CallTreasurySchemaDescription} - A server for handling Treasury calls in the WOWOK protocol.`,
   },{
     capabilities: {
       prompts: { },
