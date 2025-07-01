@@ -1,6 +1,6 @@
 {
   "name": "wowok_treasury_mcp_server",
-  "version": "1.2.25",
+  "version": "1.2.27",
   "description": "Operations to create or modify an on-chain Treasury object, where the 'account' field is used to sign transactions and the 'data' field defines object details. The Treasury object enables its administrators to manage a specific token's funds on-chain, including operations such as depositing, withdrawing, receiving funds, and setting memos/purposes for fund flows (e.g., allocating compensation payments from the treasury as a verification condition for collaborative workflows, such as after a courier loses a package, leveraging Guard objects to seamlessly integrate business processes).\nTreasury administrators control permissions for different operations through a Permission object. For withdrawal operations, distinct verification conditions (Guard objects) can be set to allow withdrawals of varying amounts, providing flexible and rapid withdrawal channels for external operators (e.g., airdrops or order incentives).",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
