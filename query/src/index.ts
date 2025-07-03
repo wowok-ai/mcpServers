@@ -162,7 +162,7 @@ const RESOURCES_TEMPL: ResourceTemplate[] = [
     },
     {
         uriTemplate: 'wowok://treasury_received/{?treasury_object, limit, order}',
-        name: A.ToolName.QUERY_TREASURY_RECEIVED,
+        name: A.ToolName.QUERY_RECEIVED,
         description: A.QueryEventSchemaDescription,
         mimeType:'text/plain'
     }
@@ -216,9 +216,9 @@ async function main() {
             inputSchema: A.QueryPersonalSchemaInput()  as ToolInput,
         },
         {
-            name: A.ToolName.QUERY_TREASURY_RECEIVED,
-            description: A.Treasury_ReceivedObject_Description,
-            inputSchema: A.QueryTreasuryReceivedSchemaInput()  as ToolInput,
+            name: A.ToolName.QUERY_RECEIVED,
+            description: A.ReceivedObject_Description,
+            inputSchema: A.QueryReceivedSchemaInput()  as ToolInput,
         },    
         {
             name: A.ToolName.QUERY_TABLE_ITEM,
@@ -322,8 +322,8 @@ async function main() {
         } else if (uri_lower.startsWith("wowok://account/list")) {
             return {tools:[], contents:[{uri:uri, text:JSON.stringify(await A.query_account_list())}]}    
         } else if (uri_lower.startsWith("wowok://treasury_received/")) {
-            const query = A.parseUrlParams<A.QueryTreasuryReceived>(uri);  
-            return {tools:[], contents:[{uri:uri, text:JSON.stringify(await A.query_treasury_received(query))}]}    
+            const query = A.parseUrlParams<A.QueryReceived>(uri);  
+            return {tools:[], contents:[{uri:uri, text:JSON.stringify(await A.query_received(query))}]}    
         } else if (uri_lower.startsWith('wowok://local_mark/filter/')) {
             const query = A.parseUrlParams<A.LocalMarkFilter>(uri);  
             server.sendLoggingMessage({level:'info', message:JSON.stringify(query)})
@@ -466,9 +466,9 @@ async function main() {
                 }
             }
 
-            case A.ToolName.QUERY_TREASURY_RECEIVED: {
-                const args = A.QueryTreasuryReceivedSchema.parse(request.params.arguments);
-                const r = await A.query_treasury_received(args);
+            case A.ToolName.QUERY_RECEIVED: {
+                const args = A.QueryReceivedSchema.parse(request.params.arguments);
+                const r = await A.query_received(args);
                 return {
                     content: [{ type: "text", text: JSON.stringify(r) }],
                 };
