@@ -1,7 +1,8 @@
+#!/usr/bin/env node
+
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport,} from "@modelcontextprotocol/sdk/server/stdio.js";
-import { CallToolRequestSchema, ListResourcesRequestSchema, ListResourceTemplatesRequestSchema, ListToolsRequestSchema, 
-    ReadResourceRequestSchema, ResourceTemplate, Tool, ToolSchema, Resource } from "@modelcontextprotocol/sdk/types.js";
+import { CallToolRequestSchema, ListToolsRequestSchema, Tool, ToolSchema } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 import * as A from 'wowok_agent';
 
