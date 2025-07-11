@@ -16,7 +16,7 @@ A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_query_mcp_server",
-    version: "1.2.32",
+    version: "1.2.33",
     description: `A server for handling queries in the WOWOK protocol.
     1. The account, personal information, address names and tags, etc. that are recorded on the local device. 
     2. Basic information of the WoWok protocol. 
@@ -433,17 +433,17 @@ async function main() {
                         biz = (r2.objects[0] as A.ObjectPermission).biz_permission;
                     }
 
-                    items = r.items?.filter(v =>v.permission).map(v => {
-                        const p = A.WOWOK.PermissionInfo.find(i => i.index === v.query);
+                    items = r.items?.filter(v =>v.permission).map(v => { //@ == not ===
+                        const p = A.WOWOK.PermissionInfo.find(i => i.index == v.query);
                         if (p) { 
                             return {...p, guard:v.guard}
                         } else {
-                            return {index:v.query, guard:v.guard, description:'biz-permission', module:'', name:biz?.find(i=>i.id === v.query)?.name ?? ''}
+                            return {index:v.query, guard:v.guard, description:'biz-permission', module:'', name:biz?.find(i=>i.id == v.query)?.name ?? ''}
                         }
                     })
                 }
 
-                const output = {...r, items: items};
+                const output = {...r, items: items, url:A.UrlResultMaker(r.object)};
                 return {
                   content: [{ type: "text", text: JSON.stringify(output) }]
                 };
