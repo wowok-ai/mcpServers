@@ -71,9 +71,9 @@ async function main() {
                 const args = A.CallPersonalSchema.parse(request.params.arguments);
                 const addr = await A.Account.Instance().get_address(args.account ?? undefined) ;
                 const r = await A.call_personal(args);
-                
+                const output = A.UrlResultMaker(addr);
                 return {
-                    content: [{ type: "text", text: JSON.stringify(r) }, A.UrlResultMaker(addr)],
+                    content: [{ type: "text", text: JSON.stringify(r) }], output
                 };
             }
 

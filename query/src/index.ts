@@ -411,8 +411,9 @@ async function main() {
             case A.ToolName.QUERY_OBJECTS: {
               const args = A.QueryObjectsSchema.parse(request.params.arguments);
               const r = await A.query_objects(args);
+              const output = A.ObjectsUrlMaker(r.objects ? r.objects.map(v=>v.object) : []);
               return {
-                content: [{ type: "text", text: JSON.stringify(r) }, A.ObjectsUrlMaker(r.objects ? r.objects.map(v=>v.object) : [])],
+                content: [{ type: "text", text: JSON.stringify(r) }, ],output
               };
             }
       
@@ -448,7 +449,7 @@ async function main() {
 
                 const output = {...r, items: items};
                 return {
-                  content: [{ type: "text", text: JSON.stringify(r) }, output],
+                  content: [{ type: "text", text: JSON.stringify(r) }],output
                 };
             }
 
@@ -458,8 +459,9 @@ async function main() {
                 if (!r) {
                     throw `${args.address.name_or_address} not found from the on-chain entity table`
                 }
+                const output = A.UrlResultMaker(r?.object)
                 return {
-                    content: [{ type: "text", text: JSON.stringify(r) }, A.UrlResultMaker(r?.object)],
+                    content: [{ type: "text", text: JSON.stringify(r) }, ], output
                 };
             }
             
