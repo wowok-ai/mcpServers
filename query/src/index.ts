@@ -16,7 +16,7 @@ A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_query_mcp_server",
-    version: "1.2.31",
+    version: "1.2.32",
     description: `A server for handling queries in the WOWOK protocol.
     1. The account, personal information, address names and tags, etc. that are recorded on the local device. 
     2. Basic information of the WoWok protocol. 
@@ -409,7 +409,7 @@ async function main() {
               const r = await A.query_objects(args);
               const output = A.ObjectsUrlMaker(r.objects ? r.objects.map(v=>v.object) : []);
               return {
-                content: [{ type: "text", text: JSON.stringify({objects:output, raw_data:JSON.stringify(r)}) }]
+                content: [{ type: "text", text: JSON.stringify({objects:output, raw_data:r}) }]
               };
             }
       
@@ -457,7 +457,7 @@ async function main() {
                 }
                 const output = A.UrlResultMaker(r?.object);
                 return {
-                    content: [{ type: "text", text: JSON.stringify({objects:[output], raw_data:JSON.stringify(r)}) }]
+                    content: [{ type: "text", text: JSON.stringify({objects:[output], raw_data:r}) }]
                 };
             }
             

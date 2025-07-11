@@ -15,7 +15,7 @@ A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_service_mcp_server",
-    version: "1.2.31",
+    version: "1.2.32",
     description: `${A.CallServiceSchemaDescription} - A server for handling Service calls in the WOWOK protocol.`,
   },{
     capabilities: {
