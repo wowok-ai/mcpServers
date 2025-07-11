@@ -15,7 +15,7 @@ A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_demand_mcp_server",
-    version: "1.2.30",
+    version: "1.2.31",
     description: `{$A.CallDemandSchemaDescription} - A server for handling Demand calls in the WOWOK protocol.`,
   },{
     capabilities: {
@@ -33,7 +33,6 @@ async function main() {
             name: A.ToolName.OP_DEMAND,
             description: A.CallDemandSchemaDescription,
             inputSchema: A.CallDemandSchemaInput()  as ToolInput,
-            outputSchema: A.ObjectChangedSchemaOutput() as ToolOutput,
         },
     ]
 
@@ -51,7 +50,7 @@ async function main() {
           switch (request.params.name) {
             case A.ToolName.OP_DEMAND: {
                 const args = A.CallDemandSchema.parse(request.params.arguments);
-                return A.ObjectOperationResult(await A.call_demand(args))
+                return {content: [{ type: "text", text: A.ObjectOperationResult(await A.call_demand(args))}]}
             }
             
             default:

@@ -16,7 +16,7 @@ A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_query_mcp_server",
-    version: "1.2.30",
+    version: "1.2.31",
     description: `A server for handling queries in the WOWOK protocol.
     1. The account, personal information, address names and tags, etc. that are recorded on the local device. 
     2. Basic information of the WoWok protocol. 
@@ -194,13 +194,11 @@ async function main() {
             name: A.ToolName.QUERY_WOWOK_PROTOCOL,
             description: A.QueryWowokProtocolSchemaDescription,
             inputSchema: A.QueryWowokProtocolSchemaInput()  as ToolInput,
-            outputSchema: A.QueryWowokProtocolResultSchemaOutput() as ToolOutput,
         }, 
         {
             name: A.ToolName.QUERY_OBJECTS,
             description: A.QueryObjectsSchemaDescription,
             inputSchema: A.QueryObjectsSchemaInput()  as ToolInput,
-            outputSchema: A.ObjectsUrlSchemaOutput() as ToolOutput
         },    
        {
             name: A.ToolName.QUERY_LOCAL,
@@ -211,7 +209,6 @@ async function main() {
             name: A.ToolName.QUERY_PERMISSIONS,
             description: A.QueryPermissionSchemaDescription,
             inputSchema: A.QueryPermissionSchemaInput()  as ToolInput,
-            outputSchema: A.QueryPermissionResultSchemaOutput() as ToolOutput,
         },
         {
             name: A.ToolName.QUERY_TABLE_ITEMS_LIST,
@@ -227,7 +224,6 @@ async function main() {
             name: A.ToolName.QUERY_PERSONAL,
             description: A.QueryPersonalSchemaDescription,
             inputSchema: A.QueryPersonalSchemaInput()  as ToolInput,
-            outputSchema: A.UrlResultSchemaOutput() as ToolOutput,
         },
         {
             name: A.ToolName.QUERY_RECEIVED,
@@ -405,7 +401,7 @@ async function main() {
                 }
                 
                 const output = {built_in_permissions:built_in_permissions, queries_for_guard:queries_for_guard};
-                return { content: [{ type: "text", text:JSON.stringify(output)}],output };
+                return { content: [{ type: "text", text:JSON.stringify(output)}] };
             }
 
             case A.ToolName.QUERY_OBJECTS: {
@@ -413,7 +409,7 @@ async function main() {
               const r = await A.query_objects(args);
               const output = A.ObjectsUrlMaker(r.objects ? r.objects.map(v=>v.object) : []);
               return {
-                content: [{ type: "text", text: JSON.stringify(r) }, ],output
+                content: [{ type: "text", text: JSON.stringify({objects:output, raw_data:JSON.stringify(r)}) }]
               };
             }
       
@@ -449,7 +445,7 @@ async function main() {
 
                 const output = {...r, items: items};
                 return {
-                  content: [{ type: "text", text: JSON.stringify(r) }],output
+                  content: [{ type: "text", text: JSON.stringify(output) }]
                 };
             }
 
@@ -459,9 +455,9 @@ async function main() {
                 if (!r) {
                     throw `${args.address.name_or_address} not found from the on-chain entity table`
                 }
-                const output = A.UrlResultMaker(r?.object)
+                const output = A.UrlResultMaker(r?.object);
                 return {
-                    content: [{ type: "text", text: JSON.stringify(r) }, ], output
+                    content: [{ type: "text", text: JSON.stringify({objects:[output], raw_data:JSON.stringify(r)}) }]
                 };
             }
             

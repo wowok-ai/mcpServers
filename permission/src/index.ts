@@ -15,7 +15,7 @@ A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_permission_mcp_server",
-    version: "1.2.30",
+    version: "1.2.31",
     description: `${A.CallPermissionSchemaDescription} - A server for handling Permission calls in the WOWOK protocol.`,
   },{
     capabilities: {
@@ -33,13 +33,11 @@ async function main() {
             name: A.ToolName.OP_PERMISSION,
             description: A.CallPermissionSchemaDescription,
             inputSchema: A.CallPermissionSchemaInput()  as ToolInput,
-            outputSchema: A.ObjectChangedSchemaOutput() as ToolOutput,
         },
         {
             name: A.ToolName.OP_REPLACE_PERMISSION_OBJECT,
             description: A.CallObejctPermissionSchemaDescription,
             inputSchema: A.CallObejctPermissionSchemaInput()  as ToolInput,
-            outputSchema: A.ObjectChangedSchemaOutput() as ToolOutput,
         },
     ]
 
@@ -57,12 +55,12 @@ async function main() {
           switch (request.params.name) {
             case A.ToolName.OP_PERMISSION: {
                 const args = A.CallPermissionSchema.parse(request.params.arguments);
-                return A.ObjectOperationResult(await A.call_permission(args));
+                return {content: [{ type: "text", text: A.ObjectOperationResult(await A.call_permission(args))}]};
             }
             
             case A.ToolName.OP_REPLACE_PERMISSION_OBJECT: {
                 const args = A.CallObejctPermissionSchema.parse(request.params.arguments);
-                return A.ObjectOperationResult(await A.call_transfer_permission(args));
+                return {content: [{ type: "text", text: A.ObjectOperationResult(await A.call_transfer_permission(args))}]};
             }
             
             default:

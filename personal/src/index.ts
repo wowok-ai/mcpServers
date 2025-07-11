@@ -16,7 +16,7 @@ A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_personal_mcp_server",
-    version: "1.2.30",
+    version: "1.2.31",
     description: `${A.CallPersonalSchemaDescription} - A server for handling Personal calls in the WOWOK protocol.`,
   },{
     capabilities: {
@@ -34,13 +34,11 @@ async function main() {
             name: A.ToolName.OP_PERSONAL,
             description: A.CallPersonalSchemaDescription,
             inputSchema: A.CallPersonalSchemaInput() as ToolInput,
-            outputSchema: A.UrlResultSchemaOutput() as ToolOutput,
         },
         {
             name: A.ToolName.OP_LOCAL_INFO,
             description: A.LocalInfoOperationSchemaDescription,
             inputSchema: A.LocalInfoOperationSchemaInput()  as ToolInput,
-
         },
         {
             name: A.ToolName.OP_LOCAL_MARK,
@@ -73,7 +71,7 @@ async function main() {
                 const r = await A.call_personal(args);
                 const output = A.UrlResultMaker(addr);
                 return {
-                    content: [{ type: "text", text: JSON.stringify(r) }], output
+                    content: [{ type: "text", text: JSON.stringify({objects:[output], raw_data:JSON.stringify(r)}) }]
                 };
             }
 

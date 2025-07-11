@@ -15,7 +15,7 @@ A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_machine_mcp_server",
-    version: "1.2.30",
+    version: "1.2.31",
     description: `${A.CallMachineSchemaDescription} - A server for handling Machine calls in the WOWOK protocol.`,
   },{
     capabilities: {
@@ -33,7 +33,6 @@ async function main() {
             name: A.ToolName.OP_MACHINE,
             description: A.CallMachineSchemaDescription,
             inputSchema: A.CallMachineSchemaInput()  as ToolInput,
-            outputSchema: A.ObjectChangedSchemaOutput() as ToolOutput,
         },
     ]
 
@@ -51,10 +50,9 @@ async function main() {
           switch (request.params.name) {
             case A.ToolName.OP_MACHINE: {
                 const args = A.CallMachineSchema.parse(request.params.arguments);
-                return A.ObjectOperationResult(await A.call_machine(args));
+                return {content: [{ type: "text", text: A.ObjectOperationResult(await A.call_machine(args))}]};
             }
 
-            
             default:
               throw new Error(`Unknown tool: ${request.params.name}`);
           }
