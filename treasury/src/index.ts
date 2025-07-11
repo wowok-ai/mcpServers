@@ -8,11 +8,14 @@ import * as A from 'wowok_agent';
 const ToolInputSchema = ToolSchema.shape.inputSchema;
 type ToolInput = z.infer<typeof ToolInputSchema>;
 
+const ToolOutputSchema = ToolSchema.shape.outputSchema;
+type ToolOutput = z.infer<typeof ToolOutputSchema>;
+
 A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_treasury_mcp_server",
-    version: "1.1.14",
+    version: "1.2.30",
     description: `${A.CallTreasurySchemaDescription} - A server for handling Treasury calls in the WOWOK protocol.`,
   },{
     capabilities: {
@@ -30,6 +33,7 @@ async function main() {
             name: A.ToolName.OP_TREASURY,
             description: A.CallTreasurySchemaDescription,
             inputSchema: A.CallTreasurySchemaInput()  as ToolInput,
+            outputSchema: A.ObjectChangedSchemaOutput() as ToolOutput,
         },
     ]
 
@@ -47,9 +51,7 @@ async function main() {
           switch (request.params.name) {
             case A.ToolName.OP_TREASURY: {
                 const args = A.CallTreasurySchema.parse(request.params.arguments);
-                return {
-                    content: [{ type: "text", text: JSON.stringify(await A.call_treasury(args)) }],
-                };
+                return A.ObjectOperationResult(await A.call_treasury(args));
             }
             
             default:

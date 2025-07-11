@@ -9,11 +9,14 @@ import * as A from 'wowok_agent';
 const ToolInputSchema = ToolSchema.shape.inputSchema;
 type ToolInput = z.infer<typeof ToolInputSchema>;
 
+const ToolOutputSchema = ToolSchema.shape.outputSchema;
+type ToolOutput = z.infer<typeof ToolOutputSchema>;
+
 A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_query_mcp_server",
-    version: "1.1.14",
+    version: "1.2.30",
     description: `A server for handling queries in the WOWOK protocol.
     1. The account, personal information, address names and tags, etc. that are recorded on the local device. 
     2. Basic information of the WoWok protocol. 
@@ -191,11 +194,13 @@ async function main() {
             name: A.ToolName.QUERY_WOWOK_PROTOCOL,
             description: A.QueryWowokProtocolSchemaDescription,
             inputSchema: A.QueryWowokProtocolSchemaInput()  as ToolInput,
+            outputSchema: A.QueryWowokProtocolResultSchemaOutput() as ToolOutput,
         }, 
         {
             name: A.ToolName.QUERY_OBJECTS,
             description: A.QueryObjectsSchemaDescription,
             inputSchema: A.QueryObjectsSchemaInput()  as ToolInput,
+            outputSchema: A.ObjectsUrlSchemaOutput() as ToolOutput
         },    
        {
             name: A.ToolName.QUERY_LOCAL,
@@ -206,6 +211,7 @@ async function main() {
             name: A.ToolName.QUERY_PERMISSIONS,
             description: A.QueryPermissionSchemaDescription,
             inputSchema: A.QueryPermissionSchemaInput()  as ToolInput,
+            outputSchema: A.QueryPermissionResultSchemaOutput() as ToolOutput,
         },
         {
             name: A.ToolName.QUERY_TABLE_ITEMS_LIST,
@@ -219,8 +225,9 @@ async function main() {
         },
         {
             name: A.ToolName.QUERY_PERSONAL,
-            description: A.QueryPermissionSchemaDescription,
+            description: A.QueryPersonalSchemaDescription,
             inputSchema: A.QueryPersonalSchemaInput()  as ToolInput,
+            outputSchema: A.UrlResultSchemaOutput() as ToolOutput,
         },
         {
             name: A.ToolName.QUERY_RECEIVED,
@@ -369,22 +376,43 @@ async function main() {
           switch (request.params.name) {
             case A.ToolName.QUERY_WOWOK_PROTOCOL: {
                 const r = A.QueryWowokProtocolSchema.parse(request.params.arguments);
-                if (r.name === A.WOWOK_PROTOCOL_INFO.BuiltInPermissions) {
-                    return { content: [{ type: "text", text: JSON.stringify(A.WOWOK.PermissionInfo) }],}
-                } else if (r.name === A.WOWOK_PROTOCOL_INFO.GuardQueryCommands) {   
-                    return { content: [{ type: "text", text: JSON.stringify(A.WOWOK.PermissionInfo) }],}
-                }
+                var built_in_permissions: any ; var queries_for_guard: any;
 
-                return {
-                    content: [{ type: "text", text: 'Invalid query name for WOWOK protocol: ' + r.name }],
-                };
+                if (r.built_in_permissions) {
+                    built_in_permissions = r.built_in_permissions.module === 'all' 
+                        ? A.WOWOK.PermissionInfo 
+                        : A.WOWOK.PermissionInfo.filter(v => (r.built_in_permissions!.module as string[]).includes(v.module));
+
+                } else if (r.queries_for_guard) {   
+                    const filterd = r.queries_for_guard.module === 'all' 
+                        ? A.WOWOK.GUARD_QUERIES 
+                        : A.WOWOK.GUARD_QUERIES.filter(v => (r.queries_for_guard!.module as string[]).includes(v.module));
+
+                    queries_for_guard = filterd.map(v => { 
+                        return { ...v, 
+                            parameters:v.parameters.map((p, index) => {
+                                const f = A.WOWOK.SER_VALUE.find(i => i.type === p);
+                                const d = v.parameters_description?.[index];
+                                return {name: f?.name ?? 'unknown', type:p, description:d ?? 'unknown'}
+                            }),
+                            return: {
+                                type: v.return,
+                                name : A.WOWOK.SER_VALUE.find(i => i.type === v.return)?.name ?? 'unknown',
+                            },
+                            parameters_description:undefined
+                        }
+                    });                        
+                }
+                
+                const output = {built_in_permissions:built_in_permissions, queries_for_guard:queries_for_guard};
+                return { content: [{ type: "text", text:JSON.stringify(output)}],output };
             }
 
             case A.ToolName.QUERY_OBJECTS: {
               const args = A.QueryObjectsSchema.parse(request.params.arguments);
               const r = await A.query_objects(args);
               return {
-                content: [{ type: "text", text: JSON.stringify(r) }],
+                content: [{ type: "text", text: JSON.stringify(r) }, A.ObjectsUrlMaker(r.objects ? r.objects.map(v=>v.object) : [])],
               };
             }
       
@@ -399,16 +427,39 @@ async function main() {
             case A.ToolName.QUERY_PERMISSIONS: {
                 const args = A.QueryPermissionSchema.parse(request.params.arguments);
                 const r = await A.query_permission(args);
+                var items ;
+
+                if (r) {
+                    const r2 = await A.query_objects({objects:[r.object]});
+                    var biz : {id:number; name:string}[] | undefined;
+                    if (r2.objects && r2.objects[0].type === 'Permission') {
+                        biz = (r2.objects[0] as A.ObjectPermission).biz_permission;
+                    }
+
+                    items = r.items?.filter(v =>v.permission).map(v => {
+                        const p = A.WOWOK.PermissionInfo.find(i => i.index === v.query);
+                        if (p) { 
+                            return {...p, guard:v.guard}
+                        } else {
+                            return {index:v.query, guard:v.guard, description:'biz-permission', module:'', name:biz?.find(i=>i.id === v.query)?.name ?? ''}
+                        }
+                    })
+                }
+
+                const output = {...r, items: items};
                 return {
-                  content: [{ type: "text", text: JSON.stringify(r) }],
+                  content: [{ type: "text", text: JSON.stringify(r) }, output],
                 };
             }
 
             case A.ToolName.QUERY_PERSONAL: {
                 const args = A.QueryPersonalSchema.parse(request.params.arguments);
                 const r = await A.query_personal(args);
+                if (!r) {
+                    throw `${args.address.name_or_address} not found from the on-chain entity table`
+                }
                 return {
-                    content: [{ type: "text", text: JSON.stringify(r) }],
+                    content: [{ type: "text", text: JSON.stringify(r) }, A.UrlResultMaker(r?.object)],
                 };
             }
             

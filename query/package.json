@@ -1,6 +1,6 @@
 {
   "name": "wowok_query_mcp_server",
-  "version": "1.2.29",
+  "version": "1.2.30",
   "description": "A server for handling queries in the WOWOK protocol.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -56,9 +56,9 @@
   "author": "wowok",
   "license": "ISC",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.7.0",
-    "zod": "^3.25.64",
-    "wowok_agent": "*"
+    "@modelcontextprotocol/sdk": "^1.15.1",
+    "wowok_agent": "*",
+    "zod": "^3.25.64"
   },
   "devDependencies": {
     "@types/node": "^22.7.5",

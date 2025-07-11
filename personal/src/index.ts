@@ -9,11 +9,14 @@ import * as A from 'wowok_agent';
 const ToolInputSchema = ToolSchema.shape.inputSchema;
 type ToolInput = z.infer<typeof ToolInputSchema>;
 
+const ToolOutputSchema = ToolSchema.shape.outputSchema;
+type ToolOutput = z.infer<typeof ToolOutputSchema>;
+
 A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_personal_mcp_server",
-    version: "1.1.14",
+    version: "1.2.30",
     description: `${A.CallPersonalSchemaDescription} - A server for handling Personal calls in the WOWOK protocol.`,
   },{
     capabilities: {
@@ -31,6 +34,7 @@ async function main() {
             name: A.ToolName.OP_PERSONAL,
             description: A.CallPersonalSchemaDescription,
             inputSchema: A.CallPersonalSchemaInput() as ToolInput,
+            outputSchema: A.UrlResultSchemaOutput() as ToolOutput,
         },
         {
             name: A.ToolName.OP_LOCAL_INFO,
@@ -65,8 +69,11 @@ async function main() {
           switch (request.params.name) {
             case A.ToolName.OP_PERSONAL: {
                 const args = A.CallPersonalSchema.parse(request.params.arguments);
+                const addr = await A.Account.Instance().get_address(args.account ?? undefined) ;
+                const r = await A.call_personal(args);
+                
                 return {
-                    content: [{ type: "text", text: JSON.stringify(await A.call_personal(args)) }],
+                    content: [{ type: "text", text: JSON.stringify(r) }, A.UrlResultMaker(addr)],
                 };
             }
 
