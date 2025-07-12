@@ -27,6 +27,8 @@ const server = new Server({
     },
 },);
 
+const QueryBuiltinName = 'Built-in permissions';
+
 async function main() {
     const TOOLS: Tool[] = [
         {
@@ -39,6 +41,12 @@ async function main() {
             description: A.CallObejctPermissionSchemaDescription,
             inputSchema: A.CallObejctPermissionSchemaInput()  as ToolInput,
         },
+        {
+            name: QueryBuiltinName,   
+            description: `Retrive Built-in permissions within the modules of the Wowok protocol. 
+            Browse, search and match the Permission-Index corresponding to the permission names by using the module names`,
+            inputSchema: A.BuiltInPermissionSchemaInput()  as ToolInput,
+        }
     ]
 
     const transport = new StdioServerTransport();
@@ -63,6 +71,13 @@ async function main() {
                 return {content: [{ type: "text", text: A.ObjectOperationResult(await A.call_transfer_permission(args))}]};
             }
             
+            case QueryBuiltinName: {
+                const args = A.BuiltInPermissionSchema.parse(request.params.arguments);
+                const built_in_permissions = args.module === 'all' 
+                        ? A.WOWOK.PermissionInfo 
+                        : A.WOWOK.PermissionInfo.filter(v => (args.module as string[]).includes(v.module));
+                return {content: [{ type: "text", text: JSON.stringify(built_in_permissions)}]};
+            }
             default:
               throw new Error(`Unknown tool: ${request.params.name}`);
           }
