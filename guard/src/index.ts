@@ -15,7 +15,7 @@ A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_guard_mcp_server",
-    version: "1.2.33",
+    version: "1.2.34",
     description: `${A.CallGuardSchemaDescription} - A server for handling Guard calls in the WOWOK protocol.`,
   },{
     capabilities: {
@@ -27,12 +27,21 @@ const server = new Server({
     },
 },);
 
+const FetchGuardQueries = 'Fetch guard queries';
+
 async function main() {
     const TOOLS: Tool[] = [
         {
             name: A.ToolName.OP_GUARD,
             description: A.CallGuardSchemaDescription,
             inputSchema: A.CallGuardSchemaInput() as ToolInput,
+        },
+        {
+            name: FetchGuardQueries,
+            description: `Retrive guard queries within the modules of the Wowok protocol. 
+                Browse, search and match the query id corresponding to the query name or description by using the module names,
+                especially when the query parameter "invalid" is present`,
+            inputSchema: A.QueriesForGuardSchemaInput() as ToolInput,
         },
     ]
 
@@ -52,17 +61,23 @@ async function main() {
                 const args = A.CallGuardSchema.parse(request.params.arguments);
                 return {content: [{ type: "text", text: A.ObjectOperationResult(await A.call_guard(args))}]};
             }
-            
+
+            case FetchGuardQueries: {
+                const args = A.QueriesForGuardSchema.parse(request.params.arguments);
+                const guard_queries = args.module === 'all' 
+                        ? A.WOWOK.GUARD_QUERIES 
+                        : A.WOWOK.GUARD_QUERIES.filter(v => (args.module as string[]).includes(v.module));
+                return {content: [{ type: "text", text: JSON.stringify(guard_queries)}]};
+            }
+
             default:
               throw new Error(`Unknown tool: ${request.params.name}`);
           }
         } catch (error) { 
             throw new Error(`Invalid input: ${JSON.stringify(error)}`);
         }
-        return {content:[]}
     });
 
-    
     await server.connect(transport);
 
     // Cleanup on exit

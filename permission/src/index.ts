@@ -15,7 +15,7 @@ A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_permission_mcp_server",
-    version: "1.2.33",
+    version: "1.2.34",
     description: `${A.CallPermissionSchemaDescription} - A server for handling Permission calls in the WOWOK protocol.`,
   },{
     capabilities: {
@@ -44,7 +44,7 @@ async function main() {
         {
             name: QueryBuiltinName,   
             description: `Retrive Built-in permissions within the modules of the Wowok protocol. 
-            Browse, search and match the Permission-Index corresponding to the permission names by using the module names`,
+            Browse, search and match the Permission-Index corresponding to the permission name or description by using the module names`,
             inputSchema: A.BuiltInPermissionSchemaInput()  as ToolInput,
         }
     ]
@@ -84,7 +84,6 @@ async function main() {
         } catch (error) { 
             throw new Error(`Invalid input: ${JSON.stringify(error)}`);
         }
-        return {content:[]}
     });
 
     
