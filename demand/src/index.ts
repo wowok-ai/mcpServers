@@ -15,7 +15,7 @@ A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_demand_mcp_server",
-    version: "1.2.36",
+    version: "1.2.37",
     description: `{$A.CallDemandSchemaDescription} - A server for handling Demand calls in the WOWOK protocol.`,
   },{
     capabilities: {
