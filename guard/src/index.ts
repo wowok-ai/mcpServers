@@ -15,7 +15,7 @@ A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_guard_mcp_server",
-    version: "1.2.38",
+    version: "1.2.39",
     description: `${A.CallGuardSchemaDescription} - A server for handling Guard calls in the WOWOK protocol. ${A.NoticeFieldsOrder}`,
   },{
     capabilities: {

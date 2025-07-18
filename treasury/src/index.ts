@@ -15,7 +15,7 @@ A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_treasury_mcp_server",
-    version: "1.2.38",
+    version: "1.2.39",
     description: `${A.CallTreasurySchemaDescription} - A server for handling Treasury calls in the WOWOK protocol. ${A.NoticeFieldsOrder}`,
   },{
     capabilities: {
