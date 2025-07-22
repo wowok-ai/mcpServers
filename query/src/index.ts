@@ -2,7 +2,8 @@
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport,} from "@modelcontextprotocol/sdk/server/stdio.js";
 import { CallToolRequestSchema, ListResourcesRequestSchema, ListResourceTemplatesRequestSchema, ListToolsRequestSchema, 
-    ReadResourceRequestSchema, ResourceTemplate, Tool, ToolSchema, Resource } from "@modelcontextprotocol/sdk/types.js";
+    ReadResourceRequestSchema, ResourceTemplate, Tool, ToolSchema, Resource, 
+    ListPromptsRequestSchema} from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 import * as A from 'wowok_agent';
 
@@ -16,7 +17,7 @@ A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_query_mcp_server",
-    version: "1.2.39",
+    version: "1.2.40",
     description: `A server for handling queries in the WOWOK protocol.
     1. The account, personal information, address names and tags, etc. that are recorded on the local device. 
     2. Basic information of the WoWok protocol. 
