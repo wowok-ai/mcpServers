@@ -1,6 +1,6 @@
 {
   "name": "wowok_arbitration_mcp_server",
-  "version": "1.2.40",
+  "version": "1.2.41",
   "description": "Operations to create or modify an on-chain Arbitration object, where the 'account' field is used to sign transactions and the 'data' field defines object details. The Arbitration object enables its managers to provide dispute arbitration for orders on-chain. It facilitates named voting based on descriptions and claims of the dispute object (Arb object) to determine the compensation amount for the order owner. If a Service object declares and accepts this Arbitration object, its arbitration results and compensation requirements will be automatically executed.When an order owner encounters a dispute with an order, they can initiate arbitration by selecting the Arbitration objects accepted by their Service object, resulting in the generation of a new Arb object.Arbitration administrators control permissions for different operations through a Permission object.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
