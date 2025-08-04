@@ -17,7 +17,7 @@ A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_query_mcp_server",
-    version: "1.2.43",
+    version: "1.2.44",
     description: `A server for handling queries in the WOWOK protocol.
     1. The account, personal information, address names and tags, etc. that are recorded on the local device. 
     2. Basic information of the WoWok protocol. 
