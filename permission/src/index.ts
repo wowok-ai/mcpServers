@@ -15,7 +15,7 @@ A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
 // Create server instance
 const server = new Server({
     name: "wowok_permission_mcp_server",
-    version: "1.2.51",
+    version: "1.2.52",
     description: `${A.CallPermissionSchemaDescription} - A server for handling Permission calls in the WOWOK protocol. ${A.NoticeFieldsOrder}`,
   },{
     capabilities: {
