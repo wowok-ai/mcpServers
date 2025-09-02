@@ -10,12 +10,11 @@ type ToolInput = z.infer<typeof ToolInputSchema>;
 
 const ToolOutputSchema = ToolSchema.shape.outputSchema;
 type ToolOutput = z.infer<typeof ToolOutputSchema>;
-
-A.WOWOK.Protocol.Instance().use_network(A.WOWOK.ENTRYPOINT.testnet);
+ 
 // Create server instance
 const server = new Server({
     name: "wowok_guard_mcp_server",
-    version: "1.2.52",
+    version: "1.3.56",
     description: `${A.CallGuardSchemaDescription} - A server for handling Guard calls in the WOWOK protocol. ${A.NoticeFieldsOrder}`,
   },{
     capabilities: {
