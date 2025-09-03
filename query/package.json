@@ -1,6 +1,6 @@
 {
   "name": "wowok_query_mcp_server",
-  "version": "1.3.56",
+  "version": "1.3.57",
   "description": "A server for handling queries in the WOWOK protocol.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
