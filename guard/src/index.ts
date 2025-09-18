@@ -14,7 +14,7 @@ type ToolOutput = z.infer<typeof ToolOutputSchema>;
 // Create server instance
 const server = new Server({
     name: "wowok_guard_mcp_server",
-    version: "1.3.62",
+    version: "1.3.63",
     description: `${A.CallGuardSchemaDescription} - A server for handling Guard calls in the WOWOK protocol. ${A.NoticeFieldsOrder}`,
   },{
     capabilities: {
