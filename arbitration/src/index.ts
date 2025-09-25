@@ -15,7 +15,7 @@ type ToolOutput = z.infer<typeof ToolOutputSchema>;
 // Create server instance
 const server = new Server({
     name: "wowok_arbitration_mcp_server",
-    version: "1.4.0",
+    version: "1.4.1",
     description: `${A.CallArbitrationSchemaDescription} - A server for handling Arbitration calls in the WOWOK protocol. ${A.NoticeFieldsOrder}`,
   },{
     capabilities: {
