@@ -17,7 +17,7 @@ type ToolOutput = z.infer<typeof ToolOutputSchema>;
 // Create server instance
 const server = new Server({
     name: "wowok_query_mcp_server",
-    version: "1.4.2",
+    version: "1.4.3",
     description: `A server for handling queries in the WOWOK protocol.
     1. The account, personal information, address names and tags, etc. that are recorded on the local device. 
     2. Basic information of the WoWok protocol. 
