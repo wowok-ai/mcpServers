@@ -1,6 +1,6 @@
 {
   "name": "wowok_personal_mcp_server",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Operations to create or modify on-chain personal information(including name, avatar, website, social media accounts, etc.) , and on-chain address favorites (such as naming, tagging, and favoriting addresses to facilitate easier management of these addresses and objects), where the 'account' field is used to sign transactions and the 'data' field defines object details.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -1,6 +1,6 @@
 {
   "name": "wowok_repository_mcp_server",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Operations to create or modify an on-chain Repository object using the 'account' field to sign transactions and the 'data' field to define object details. The Repository object enables its manager to declare and manage an on-chain database through consensus names and their independent permission settings, with data retrieval and management based on both address and consensus name. Repositories are widely used for on-chain data maintenance and utilization, such as: a named Repository providing medical data for different patients (addresses) and injury conditions (consensus names) to validate insurance claim conditions; a named Repository offering hourly(with time converted to addresses) diving recommendations (consensus names) for Maldives city to support travel service providers in force majeure service disclaimers; and various data oracles. Repository administrators control permissions for different operations through a Permission object. and may individually set Policies for specific consensus names (including independent write permissions, declarations of consensus content, and data usage rules).",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
