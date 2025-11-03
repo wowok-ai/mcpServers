@@ -14,7 +14,7 @@ type ToolOutput = z.infer<typeof ToolOutputSchema>;
 // Create server instance
 const server = new Server({
     name: "wowok_guard_mcp_server",
-    version: "1.4.4",
+    version: "1.4.5",
     description: `${A.CallGuardSchemaDescription} - A server for handling Guard calls in the WOWOK protocol. ${A.NoticeFieldsOrder}`,
   },{
     capabilities: {
@@ -26,8 +26,6 @@ const server = new Server({
     },
 },);
 
-const FetchGuardQueries = 'Fetch guard queries';
-
 async function main() {
     const TOOLS: Tool[] = [
         {
@@ -36,10 +34,8 @@ async function main() {
             inputSchema: A.CallGuardSchemaInput() as ToolInput,
         },
         {
-            name: FetchGuardQueries,
-            description: `Retrive guard queries within the modules of the Wowok protocol. 
-                Browse, search and match the query id corresponding to the query name or description by using the module names,
-                especially when the query parameter "invalid" is present`,
+            name: A.ToolName.QUERY_GUARD_QUERIES,
+            description: A.QueryGuardQueriesDescription,
             inputSchema: A.QueriesForGuardSchemaInput() as ToolInput,
         },
     ]
@@ -61,7 +57,7 @@ async function main() {
                 return {content: [{ type: "text", text: A.ObjectOperationResult(await A.call_guard(args))}]};
             }
 
-            case FetchGuardQueries: {
+            case A.ToolName.QUERY_GUARD_QUERIES: {
                 const args = A.QueriesForGuardSchema.parse(request.params.arguments);
                 const guard_queries = args.module === 'all' 
                         ? A.WOWOK.GUARD_QUERIES 

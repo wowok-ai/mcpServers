@@ -15,7 +15,7 @@ type ToolOutput = z.infer<typeof ToolOutputSchema>;
 // Create server instance
 const server = new Server({
     name: "wowok_permission_mcp_server",
-    version: "1.4.4",
+    version: "1.4.5",
     description: `${A.CallPermissionSchemaDescription} - A server for handling Permission calls in the WOWOK protocol. ${A.NoticeFieldsOrder}`,
   },{
     capabilities: {
@@ -26,8 +26,6 @@ const server = new Server({
       tokensOptimized: true, // Optimize tokens for better performance and efficiency.
     },
 },);
-
-const QueryBuiltinName = 'Built-in permissions';
 
 async function main() {
     const TOOLS: Tool[] = [
@@ -42,9 +40,8 @@ async function main() {
             inputSchema: A.CallObejctPermissionSchemaInput()  as ToolInput,
         },
         {
-            name: QueryBuiltinName,   
-            description: `Retrive Built-in permissions within the modules of the Wowok protocol. 
-            Browse, search and match the Permission-Index corresponding to the permission name or description by using the module names`,
+            name: A.ToolName.QUERY_BUILT_IN_PERMISSIONS,   
+            description: A.QueryBuiltinPermissionsDescription,
             inputSchema: A.BuiltInPermissionSchemaInput()  as ToolInput,
         }
     ]
@@ -71,7 +68,7 @@ async function main() {
                 return {content: [{ type: "text", text: A.ObjectOperationResult(await A.call_transfer_permission(args))}]};
             }
             
-            case QueryBuiltinName: {
+            case A.ToolName.QUERY_BUILT_IN_PERMISSIONS: {
                 const args = A.BuiltInPermissionSchema.parse(request.params.arguments);
                 const built_in_permissions = args.module === 'all' 
                         ? A.WOWOK.PermissionInfo 

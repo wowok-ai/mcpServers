@@ -15,7 +15,7 @@ type ToolOutput = z.infer<typeof ToolOutputSchema>;
 // Create server instance
 const server = new Server({
     name: "wowok_treasury_mcp_server",
-    version: "1.4.4",
+    version: "1.4.5",
     description: `${A.CallTreasurySchemaDescription} - A server for handling Treasury calls in the WOWOK protocol. ${A.NoticeFieldsOrder}`,
   },{
     capabilities: {

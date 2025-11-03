@@ -15,7 +15,7 @@ type ToolOutput = z.infer<typeof ToolOutputSchema>;
 // Create server instance
 const server = new Server({
     name: "wowok_service_mcp_server",
-    version: "1.4.4",
+    version: "1.4.5",
     description: `${A.CallServiceSchemaDescription} - A server for handling Service calls in the WOWOK protocol. ${A.NoticeFieldsOrder}`,
   },{
     capabilities: {
